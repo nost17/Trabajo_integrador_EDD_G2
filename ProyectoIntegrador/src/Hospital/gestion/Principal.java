@@ -31,8 +31,8 @@ public class Principal {
             System.out.println("6- Consultar Cirugias Realizadas");
             System.out.println("7- Mostrar consultas Medicas Realizadas");
             System.out.println("8- Salir");
-            opcion = Helper.validarEnteroEnRango(input, "ingrese opcion: ", 1, 8);
-            System.out.println("_______________________________________________________________________________________________________");
+            opcion = Helper.validarEnteroEnRango(input, "ingrese opcion:", 1, 8);
+            System.out.println(Helper.repetirLetra("_", 50));
             switch (opcion) {
                 case 1:
                     inicioJornada(codigos, medicamentos, medicosDisponibles, input);
@@ -60,13 +60,13 @@ public class Principal {
             System.out.println("1- Gestion de Medicamentos");
             System.out.println("2- Gestion de Medicos");
             System.out.println("3- Volver...");
-            opcion = Helper.validarEnteroEnRango(input, "ingrese opcion: ", 1, 3);
-            System.out.println("_______________________________________________________________________________________________________");
+            opcion = Helper.validarEnteroEnRango(input, "ingrese opcion:", 1, 3);
+            System.out.println(Helper.repetirLetra("_", 50));
             switch (opcion) {
                 case 1 -> {
                     if (bandera) {
                         System.out.println("Ya no puedes modificar la lista de Medicamentos...");
-                        System.out.println("_______________________________________________________________________________________________________");
+                        System.out.println(Helper.repetirLetra("_", 50));
                         break;
                     } else {
                         System.out.println("   GESTION DE MEDICAMENTOS   ");
@@ -84,7 +84,7 @@ public class Principal {
                         }
                         bandera = true;
                     }
-                    System.out.println("_______________________________________________________________________________________________________");
+                    System.out.println(Helper.repetirLetra("_", 50));
                 }
                 case 2 -> {
                     System.out.println("   GESTION DE MEDICOS   ");
@@ -106,7 +106,7 @@ public class Principal {
                     }
                     medicosDisponibles.InOrder();
                     System.out.println();
-                    System.out.println("_______________________________________________________________________________________________________");
+                    System.out.println(Helper.repetirLetra("_", 50));
                 }
             }
         } while (opcion != 3);

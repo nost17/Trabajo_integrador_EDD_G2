@@ -149,7 +149,7 @@ public class Helper {
     public static int validarEnteroEnRango(Scanner entrada, String mensaje, int min, int max) {
         int numero;
         while (true) {
-            numero = validarEntero(entrada, mensaje + " (entre " + min + " y " + max + "):");
+            numero = validarEntero(entrada, mensaje + " (entre " + min + " y " + max + "): ");
             if (numero >= min && numero <= max) {
                 return numero;
             } else {
@@ -234,6 +234,10 @@ public class Helper {
                 System.out.println("Error!!! Debe ingresar un valor válido en formato HH:mm:ss.");
             }
         }
+    }
+
+    public static String repetirLetra(String letra, int cantidad) {
+        return letra.repeat(cantidad);
     }
 
     public static int validarCodigo(ArrayList<Integer> codigos, Scanner input, String mensaje) {
