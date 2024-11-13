@@ -3,54 +3,53 @@ package Hospital.estructuras;
 import java.util.Iterator;
 
 public class SimpleLinkedList<ELEMENT> implements ILinkedList<ELEMENT> {
- 
+
     //region Node Class
- 
     private class Node<ELEMENT> {
+
         public ELEMENT item;
         public Node<ELEMENT> next;
- 
+
         public Node() {
             this(null, null);
         }
+
         public Node(ELEMENT item) {
             this(item, null);
         }
+
         public Node(ELEMENT item, Node<ELEMENT> next) {
             this.item = item;
             this.next = next;
         }
- 
+
         @Override
         public String toString() {
             return this.item.toString();
         }
     }
     //endregion
- 
+
     //region Attributes
- 
     protected Node<ELEMENT> head;
     protected int count;
     protected Node<ELEMENT> tail;
     //endregion
- 
+
     //region Constructors
- 
     public SimpleLinkedList() {
         this.head = null;
         this.count = 0;
         this.tail = null;
     }
     //endregion
- 
+
     //region Linked List Methods
- 
     // Returns the number of elements in this list.
     public int size() {
         return this.count;
     }
- 
+
     public void addFirstRookieVersion(ELEMENT item) {
         if (this.count == 0) {
             this.head = this.tail = new Node<ELEMENT>(item, null);
@@ -62,6 +61,7 @@ public class SimpleLinkedList<ELEMENT> implements ILinkedList<ELEMENT> {
             ++this.count;
         }
     }
+
     // Inserts the specified element at the beginning of this list.
     public void addFirst(ELEMENT item) {
         Node<ELEMENT> temp = new Node<ELEMENT>(item, this.head);
@@ -71,7 +71,7 @@ public class SimpleLinkedList<ELEMENT> implements ILinkedList<ELEMENT> {
         this.head = temp;
         ++this.count;
     }
- 
+
     public void addLastRookieVersion(ELEMENT item) {
         if (this.count == 0) {
             this.head = this.tail = new Node<ELEMENT>(item, null);
@@ -83,6 +83,7 @@ public class SimpleLinkedList<ELEMENT> implements ILinkedList<ELEMENT> {
             ++this.count;
         }
     }
+
     // Appends the specified element to the end of this list.
     public void addLast(ELEMENT item) {
         Node<ELEMENT> temp = new Node<ELEMENT>(item, null);
@@ -94,7 +95,7 @@ public class SimpleLinkedList<ELEMENT> implements ILinkedList<ELEMENT> {
         this.tail = temp;
         ++this.count;
     }
- 
+
     // Removes and returns the first element from this list.
     public ELEMENT removeFirst() {
         if (this.count == 0) {
@@ -108,7 +109,7 @@ public class SimpleLinkedList<ELEMENT> implements ILinkedList<ELEMENT> {
         --this.count;
         return item;
     }
- 
+
     // Removes and returns the last element from this list.
     public ELEMENT removeLast() {
         if (this.count == 0) {
@@ -129,48 +130,47 @@ public class SimpleLinkedList<ELEMENT> implements ILinkedList<ELEMENT> {
         return item;
     }
     //endregion
- 
+
     //region Object Methods
- 
     @Override
     public String toString() {
- 
-        if (this.size() <=0) {
+
+        if (this.size() <= 0) {
             return "";
         }
- 
+
         // from https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/lang/StringBuilder.html
         StringBuilder sb = new StringBuilder();
- 
+
         sb.append("[" + this.head.item.toString());
         for (Node<ELEMENT> skip = this.head.next; skip != null; skip = skip.next) {
             sb.append(", " + skip.item.toString());
         }
         sb.append("]");
- 
+
         return sb.toString();
     }
     //endregion
- 
- 
+
     //region Iterable Methods
     @Override
     public Iterator<ELEMENT> iterator() {
         return new SimpleLinkedListIterator(this.head);
     }
- 
+
     private class SimpleLinkedListIterator implements Iterator<ELEMENT> {
+
         private Node<ELEMENT> current;
- 
+
         public SimpleLinkedListIterator(Node<ELEMENT> current) {
             this.current = current;
         }
- 
+
         @Override
         public boolean hasNext() {
             return this.current != null;
         }
- 
+
         @Override
         public ELEMENT next() {
             if (!this.hasNext()) {
@@ -180,10 +180,8 @@ public class SimpleLinkedList<ELEMENT> implements ILinkedList<ELEMENT> {
             this.current = this.current.next;
             return item;
         }
- 
+
     }
- 
- 
+
     //endregion
- 
 }
