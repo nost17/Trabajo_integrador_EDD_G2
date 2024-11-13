@@ -2,24 +2,22 @@ package Hospital.modelo;
 
 public class Medicamento {
 
-    private int codigo;
+    private static int _codigo;
+    private final int codigo;
     private String nombre;
     private double precio;
     private int stockDisponible;
 
-    public Medicamento(int codigo, String nombre, double precio, int stockDisponible) {
-        this.codigo = codigo;
+    public Medicamento(String nombre, double precio, int stockDisponible) {
+        this.codigo = _codigo;
         this.nombre = nombre;
         this.precio = precio;
         this.stockDisponible = stockDisponible;
+        ++_codigo;
     }
 
     public int getCodigo() {
         return codigo;
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
     }
 
     public String getNombre() {
