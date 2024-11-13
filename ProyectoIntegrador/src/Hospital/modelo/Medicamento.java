@@ -6,6 +6,10 @@ public class Medicamento {
     private String nombre;
     private double precio;
     private int stockDisponible;
+    
+    public Medicamento(){
+        
+    }
 
     public Medicamento(int codigo, String nombre, double precio, int stockDisponible) {
         this.codigo = codigo;

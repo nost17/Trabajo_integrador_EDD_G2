@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import java.util.*;
 
 public class Helper {
 
@@ -15,7 +16,7 @@ public class Helper {
         String valorIngresado;
         while (true) {
             try {
-                System.out.println(mensaje);
+                System.out.print(mensaje);
                 valorIngresado = entrada.nextLine();
                 numero = Integer.parseInt(valorIngresado);
                 break;
@@ -31,7 +32,7 @@ public class Helper {
         int numero;
         while (true) {
             try {
-                System.out.println(mensaje);
+                System.out.print(mensaje);
                 numero = Integer.parseInt(entrada.nextLine().trim());
                 if (numero >= 0) {
                     return numero;
@@ -49,7 +50,7 @@ public class Helper {
         double numero;
         while (true) {
             try {
-                System.out.println(mensaje);
+                System.out.print(mensaje);
                 numero = Double.parseDouble(entrada.nextLine().trim());
                 if (numero >= 0) {
                     return numero;
@@ -68,7 +69,7 @@ public class Helper {
         String valorIngresado;
         while (true) {
             try {
-                System.out.println(mensaje);
+                System.out.print(mensaje);
                 valorIngresado = entrada.nextLine();
                 numero = Double.parseDouble(valorIngresado);
                 break;
@@ -161,7 +162,7 @@ public class Helper {
     public static String validarSoloLetras(Scanner entrada, String mensaje) {
         String valorIngresado;
         while (true) {
-            System.out.println(mensaje);
+            System.out.print(mensaje);
             valorIngresado = entrada.nextLine().trim();
             if (valorIngresado.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
                 return valorIngresado;
@@ -175,7 +176,7 @@ public class Helper {
     public static String validarSoloNumeros(Scanner entrada, String mensaje) {
         String valorIngresado;
         while (true) {
-            System.out.println(mensaje);
+            System.out.print(mensaje);
             valorIngresado = entrada.nextLine().trim();
             if (valorIngresado.matches("\\d+")) {
                 return valorIngresado;
@@ -234,4 +235,27 @@ public class Helper {
             }
         }
     }
+    
+    public static int validarCodigo(ArrayList<Integer> codigos, Scanner input, String mensaje){
+        int codigo = validarEntero(input, "ingrese codigo: ");
+        while (codigos.contains(codigo)){
+            System.out.println("codigo invalido, ingrese un codigo unico: ");
+            codigo = validarEntero(input, "ingrese codigo: ");
+        }
+        codigos.add(codigo);
+        return codigo;
+    }
+     public static String validarEspecialidad(Scanner input){
+         String especialidad = validarSoloLetras(input, "Ingrese Especialidad: ");
+         especialidad = especialidad.toLowerCase();
+         ArrayList<String> especialidades = new ArrayList();
+         especialidades.add("cirujano");
+         especialidades.add("clinica general");
+         while (!especialidades.contains(especialidad)){
+             System.out.println("Especialidad no valida... CIRUJANO / CLINICA GENERAL");
+             especialidad = validarSoloLetras(input, "Ingrese Especialidad: ");
+             especialidad = especialidad.toLowerCase();
+         }
+         return especialidad;
+     }
 }
