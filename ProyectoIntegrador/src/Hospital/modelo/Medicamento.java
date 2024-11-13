@@ -7,6 +7,11 @@ public class Medicamento {
     private String nombre;
     private double precio;
     private int stockDisponible;
+    
+    public Medicamento(){
+        this.codigo = _codigo;
+        ++_codigo;
+    }
 
     public Medicamento(String nombre, double precio, int stockDisponible) {
         this.codigo = _codigo;

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 
 
-public class ColaCircularGenerica <ELEMENT>{
+public class QueueCircular <ELEMENT>{
 	private final static Integer defaultDimension=10;
 	
 	//Atributos
@@ -14,11 +14,11 @@ public class ColaCircularGenerica <ELEMENT>{
 	private int count;
 	
 	//Constructores
-	ColaCircularGenerica() {
-		this(ColaCircularGenerica.defaultDimension);
+	QueueCircular() {
+		this(QueueCircular.defaultDimension);
 	}
 	
-	ColaCircularGenerica(int dimension){
+	QueueCircular(int dimension){
 		this.dato=(ELEMENT[]) new Object [dimension];
 		this.head=0;
 		this.tail=0;
