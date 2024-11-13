@@ -98,7 +98,7 @@ public class Principal {
                     break;
                 case 2:
                     System.out.println("   GESTION DE MEDICOS   ");
-                    int cantidad = Helper.validarEntero(input, "Cantidad de Medicos Disponibles: ");
+                    int cantidad = Helper.validarEnteroNoNegativo(input, "Cantidad Medicos Disponibles: ");
                     for (int i = 0; i < cantidad; i++) {
                         int matricula = (int) (Math.random()*100);
                         String nombre = Helper.validarSoloLetras(input, "Nomnbre: ");
