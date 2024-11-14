@@ -2,7 +2,7 @@ package Hospital.modelo;
 
 public class Medicamento {
 
-    private static int _codigo;
+    private static int _codigo = 0;
     private final int codigo;
     private String nombre;
     private double precio;
