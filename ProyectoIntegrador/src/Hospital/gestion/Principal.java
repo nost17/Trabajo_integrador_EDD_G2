@@ -13,8 +13,8 @@ public class Principal {
         int tamañoMedicamentos = ((int) (Math.random() * 10)) + 2;
         Medicamento[] medicamentos = new Medicamento[tamañoMedicamentos];
         BinarySearchTree<Medico> medicosDisponibles = new BinarySearchTree<>();
-        QueueCircular<Paciente> prioridadAlta;
-        QueueCircular<Paciente> prioridadMedia;
+        QueueCircular<Paciente> prioridadAlta = new QueueCircular<>();
+        QueueCircular<Paciente> prioridadMedia = new QueueCircular<>();
         PilaGenerica<Cirugia> cirugiasProgramadas;
         DoubleLinkedList<Consulta> consultaRealizadas;
         DoubleLinkedList<Cirugia> cirugiasRealizadas;
@@ -38,6 +38,7 @@ public class Principal {
                     inicioJornada(codigos, medicamentos, medicosDisponibles, input);
                     break;
                 case 2:
+                    atencionPacientes(input, prioridadAlta, prioridadMedia);
                     break;
                 case 3:
                     break;
@@ -110,5 +111,24 @@ public class Principal {
                 }
             }
         } while (opcion != 3);
+    }
+    public static void atencionPacientes(Scanner input, QueueCircular<Paciente> prioridadAlta, QueueCircular<Paciente> prioridadMedia){
+        System.out.println("               GESTION DE PACIENTES               ");
+        int dni = Helper.validarEntero(input, "Dni: ");
+        int edad = Helper.validarEntero(input, "Edad: ");
+        String nombre = Helper.validarSoloLetras(input, "Nombre: ");
+        String[] antecedentes = Helper.validarAntecedentes(input);
+        Paciente paciente = new Paciente(dni, edad, nombre, antecedentes);
+        System.out.println(Helper.repetirLetra("_", 50));
+        int diagnostico = (int)(Math.random()*2)+1;
+        if (diagnostico == 1){
+            System.out.println("PACIENTE AGREGADO PARA PRIORIDAD ALTA...");
+            prioridadAlta.offer(paciente);
+        } else {
+            System.out.println("PACIENTE AGREGADO PARA PRIORIDAD MEDIA...");
+            prioridadMedia.offer(paciente);
+        }
+        System.out.println("Paciente agregado correctamente...");
+        System.out.println(Helper.repetirLetra("_", 50));
     }
 }
