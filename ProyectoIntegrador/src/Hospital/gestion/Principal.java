@@ -7,19 +7,20 @@ import java.util.ArrayList;
 
 public class Principal {
 
+    private static final int tamañoMedicamentos = ((int) (Math.random() * 10)) + 2;
     public static Scanner input = new Scanner(System.in);
+    public static Medicamento[] medicamentos = new Medicamento[tamañoMedicamentos];
+    public static BinarySearchTree<Medico> medicosDisponibles = new BinarySearchTree<>();
+    public static QueueCircular<Paciente> prioridadAlta = new QueueCircular<>();
+    public static QueueCircular<Paciente> prioridadMedia = new QueueCircular<>();
+    public static PilaGenerica<Cirugia> cirugiasProgramadas;
+    public static DoubleLinkedList<Consulta> consultaRealizadas;
+    public static DoubleLinkedList<Cirugia> cirugiasRealizadas;
+    public static ArrayList<Integer> codigos = new ArrayList<>();
+    public static ArrayList<Integer> matriculas = new ArrayList<>();
 
     public static void main(String[] args) {
-        int tamañoMedicamentos = ((int) (Math.random() * 10)) + 2;
-        Medicamento[] medicamentos = new Medicamento[tamañoMedicamentos];
-        BinarySearchTree<Medico> medicosDisponibles = new BinarySearchTree<>();
-        QueueCircular<Paciente> prioridadAlta = new QueueCircular<>();
-        QueueCircular<Paciente> prioridadMedia = new QueueCircular<>();
-        PilaGenerica<Cirugia> cirugiasProgramadas;
-        DoubleLinkedList<Consulta> consultaRealizadas;
-        DoubleLinkedList<Cirugia> cirugiasRealizadas;
-        ArrayList<Integer> codigos = new ArrayList<>();
-        ArrayList<Integer> matriculas = new ArrayList<>();
+
         int opcion;
         do {
             System.out.println("--- Menu gestion Hospital ---");
@@ -112,7 +113,8 @@ public class Principal {
             }
         } while (opcion != 3);
     }
-    public static void atencionPacientes(Scanner input, QueueCircular<Paciente> prioridadAlta, QueueCircular<Paciente> prioridadMedia){
+
+    public static void atencionPacientes(Scanner input, QueueCircular<Paciente> prioridadAlta, QueueCircular<Paciente> prioridadMedia) {
         System.out.println("               GESTION DE PACIENTES               ");
         int dni = Helper.validarEntero(input, "Dni: ");
         int edad = Helper.validarEntero(input, "Edad: ");
@@ -120,8 +122,8 @@ public class Principal {
         String[] antecedentes = Helper.validarAntecedentes(input);
         Paciente paciente = new Paciente(dni, edad, nombre, antecedentes);
         System.out.println(Helper.repetirLetra("_", 50));
-        int diagnostico = (int)(Math.random()*2)+1;
-        if (diagnostico == 1){
+        int diagnostico = (int) (Math.random() * 2) + 1;
+        if (diagnostico == 1) {
             System.out.println("PACIENTE AGREGADO PARA PRIORIDAD ALTA...");
             prioridadAlta.offer(paciente);
         } else {
