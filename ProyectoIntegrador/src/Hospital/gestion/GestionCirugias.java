@@ -7,9 +7,7 @@ import Hospital.modelo.Cirugia;
 import Hospital.modelo.Consulta;
 import Hospital.modelo.Medicamento;
 import Hospital.modelo.Medico;
-import Hospital.modelo.Paciente;
 import java.time.LocalDate;
-import java.util.Iterator;
 
 public class GestionCirugias {
 
@@ -59,6 +57,9 @@ public class GestionCirugias {
             }
             case 7 -> {
                 consultarPacientesPorAntecedenteEnConsultas();
+            }
+            case 8 -> {
+                consultarMontoTotalMedicamentos();
             }
         }
     }
@@ -158,5 +159,15 @@ public class GestionCirugias {
         }
 
         System.out.println(contador + " pacientes padecieron de " + casoBuscado);
+    }
+
+    private static void consultarMontoTotalMedicamentos() {
+        double contador = 0;
+
+        for (Medicamento medicamento : Principal.medicamentos) {
+            contador += medicamento.getPrecio() * medicamento.getStockDisponible();
+        }
+
+        System.out.println("El monto total de los medicamentos en el hospital es de $" + contador);
     }
 }
