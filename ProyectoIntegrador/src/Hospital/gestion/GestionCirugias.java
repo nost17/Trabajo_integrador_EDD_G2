@@ -54,6 +54,12 @@ public class GestionCirugias {
             case 5 -> {
                 consultarPacientesPorFecha();
             }
+            case 6 -> {
+                consultarOperadosPorEdad();
+            }
+            case 7 -> {
+                consultarPacientesPorAntecedenteEnConsultas();
+            }
         }
     }
 
@@ -135,5 +141,22 @@ public class GestionCirugias {
                 + " años" + " hasta "
                 + edadFinal
                 + " años");
+    }
+
+    private static void consultarPacientesPorAntecedenteEnConsultas() {
+        int contador = 0;
+        String casoBuscado = Helper.validarStringNoVacio(Principal.input, "Escriba el pacedimiento a buscar: ");
+
+        for (Consulta consultaRealizada : Principal.consultaRealizadas) {
+            String[] antecedentes = consultaRealizada.getPaciente().getAntecedentes();
+
+            for (String caso : antecedentes) {
+                if (caso.equals(casoBuscado)) {
+                    ++contador;
+                }
+            }
+        }
+
+        System.out.println(contador + " pacientes padecieron de " + casoBuscado);
     }
 }
