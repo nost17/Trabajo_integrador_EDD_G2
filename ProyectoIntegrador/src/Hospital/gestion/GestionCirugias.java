@@ -7,6 +7,7 @@ import Hospital.modelo.Cirugia;
 import Hospital.modelo.Consulta;
 import Hospital.modelo.Medicamento;
 import Hospital.modelo.Medico;
+import Hospital.modelo.Paciente;
 import java.time.LocalDate;
 import java.util.Iterator;
 
@@ -49,6 +50,9 @@ public class GestionCirugias {
             }
             case 4 -> {
                 consultarConsultasEfectuadas();
+            }
+            case 5 -> {
+                consultarPacientesPorFecha();
             }
         }
     }
@@ -110,5 +114,26 @@ public class GestionCirugias {
         System.out.println("Pacientes antendidos desde " + fechaFinal + " hasta " + fechaFinal);
         System.out.println("En cirugias: " + contarCirugiasPorFecha(fechaInicial, fechaFinal) + " pacientes");
         System.out.println("En consultas: " + contarConsultasPorFecha(fechaInicial, fechaFinal) + " pacientes");
+    }
+
+    private static void consultarOperadosPorEdad() {
+        int contador = 0;
+
+        int edadInicial = Helper.validarEnteroNoNegativo(Principal.input, "Edad minima: ");
+        int edadFinal = Helper.validarEnteroNoNegativo(Principal.input, "Edad maxima: ");
+
+        for (Cirugia cirugiaRealizada : Principal.cirugiasRealizadas) {
+            int edadPacienteOperado = cirugiaRealizada.getPaciente().getEdad();
+
+            if (edadPacienteOperado >= edadInicial && edadPacienteOperado <= edadFinal) {
+                ++contador;
+            }
+        }
+
+        System.out.println("Hay " + contador + " pacientes operados de "
+                + edadInicial
+                + " años" + " hasta "
+                + edadFinal
+                + " años");
     }
 }
