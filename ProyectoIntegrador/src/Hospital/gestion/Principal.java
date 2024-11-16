@@ -115,7 +115,7 @@ public class Principal {
     public static void atencionPacientes(Scanner input, QueueCircular<Paciente> prioridadAlta, QueueCircular<Paciente> prioridadMedia){
         System.out.println("               GESTION DE PACIENTES               ");
         int dni = Helper.validarEntero(input, "Dni: ");
-        int edad = Helper.validarEntero(input, "Edad: ");
+        int edad = Helper.validarEnteroEnRango(input, "Edad: ", 1, 100);
         String nombre = Helper.validarSoloLetras(input, "Nombre: ");
         String[] antecedentes = Helper.validarAntecedentes(input);
         Paciente paciente = new Paciente(dni, edad, nombre, antecedentes);
