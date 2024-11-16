@@ -26,12 +26,25 @@ public class GestionCirugias {
 
     public static void GestionConsultas() {
         int opcion;
+        String[] opciones = {
+            "Consulta de medicos disponibles",
+            "Consulta de medicamentos por stock (min y max)",
+            "Consulta de cirugías realizadas",
+            "Consulta de consultas medicas efectuadas",
+            "Cantidad de pacientes atendidos en un rango de fechas",
+            "Cantidad de pacientes operados por edad",
+            "Cantidad de pacientes atendidos en consulta por antecedente",
+            "Monto total al que ascienden los medicamentos que tiene el hospital",
+            "Volver",};
         do {
+            for (int i = 0; i < opciones.length; i++) {
+                System.out.println(" " + i + "- " + opciones[i]);
+            }
             opcion = Helper.validarEnteroEnRango(Principal.input, "Elije una opcion: ", 1, 9);
             System.out.println(Helper.repetirLetra("-", 50));
             ejecutarOpcion(opcion);
             System.out.println(Helper.repetirLetra("_", 50));
-        } while (opcion != 3);
+        } while (opcion != 9);
     }
 
     private static void ejecutarOpcion(int opcion) {
@@ -60,6 +73,9 @@ public class GestionCirugias {
             }
             case 8 -> {
                 consultarMontoTotalMedicamentos();
+            }
+            case 9 -> {
+                System.out.println("Volviendo al menu principal...");
             }
         }
     }
@@ -118,6 +134,7 @@ public class GestionCirugias {
     private static void consultarPacientesPorFecha() {
         LocalDate fechaInicial = Helper.validarFecha(Principal.input, "Fecha inicial: ", "dd/MM/yyyy");
         LocalDate fechaFinal = Helper.validarFecha(Principal.input, "Fecha limite: ", "dd/MM/yyyy");
+        System.out.println(Helper.repetirLetra("-", 50));
         System.out.println("Pacientes antendidos desde " + fechaFinal + " hasta " + fechaFinal);
         System.out.println("En cirugias: " + contarCirugiasPorFecha(fechaInicial, fechaFinal) + " pacientes");
         System.out.println("En consultas: " + contarConsultasPorFecha(fechaInicial, fechaFinal) + " pacientes");
