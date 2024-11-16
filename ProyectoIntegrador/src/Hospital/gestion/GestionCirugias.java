@@ -4,10 +4,11 @@ import Hospital.estructuras.BinarySearchTree;
 import Hospital.estructuras.DoubleLinkedList;
 import Hospital.estructuras.PilaGenerica;
 import Hospital.modelo.Cirugia;
+import Hospital.modelo.Medicamento;
 import Hospital.modelo.Medico;
 
 public class GestionCirugias {
-    
+
     public static void realizarCirugia(
             PilaGenerica<Cirugia> cirugiasProgramadas,
             DoubleLinkedList<Cirugia> cirugiasRealizadas,
@@ -36,6 +37,20 @@ public class GestionCirugias {
             case 1 -> {
                 System.out.println("Lista de medicos disponibles en el hospital:");
                 Principal.medicosDisponibles.InOrder();
+            }
+            case 2 -> {
+                consultarMedicamentos();
+            }
+        }
+    }
+
+    private static void consultarMedicamentos() {
+        int stockComparar = Helper.validarEnteroNoNegativo(Principal.input, "Ingrese stock maximo a mostrar: ");
+        System.out.println(Helper.repetirLetra("-", 50));
+        System.out.println("Lista de medicamentos con stock menor a "+ stockComparar);
+        for (Medicamento medicamento : Principal.medicamentos) {
+            if (medicamento.getStockDisponible() <= stockComparar){
+                System.out.println(medicamento);
             }
         }
     }
