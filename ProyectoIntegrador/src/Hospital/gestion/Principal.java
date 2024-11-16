@@ -2,6 +2,7 @@ package Hospital.gestion;
 
 import Hospital.estructuras.*;
 import Hospital.modelo.*;
+import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -130,5 +131,39 @@ public class Principal {
         }
         System.out.println("Paciente agregado correctamente...");
         System.out.println(Helper.repetirLetra("_", 50));
+    }
+    
+    public static void atencionPrioridadMedia(DoubleLinkedList<Consulta> consultasRealizadas,QueueCircular<Paciente> prioridadMedia, Medico medico, Medicamento medicacion, int cantidadNecesaria, LocalDate fecha){
+        Paciente paciente = prioridadMedia.remove();
+        Consulta consulta = new Consulta(medico, paciente, medicacion, cantidadNecesaria, fecha);
+        consultasRealizadas.addLast(consulta);
+        
+    }
+    public static void atencionPrioridadAlta(DoubleLinkedList<Consulta> consultasRealizadas,QueueCircular<Paciente> prioridadAlta, Medico medico, LocalDate fecha, PilaGenerica<Cirugia> cirugiasProgramadas){
+        
+        Paciente paciente = prioridadAlta.remove(); 
+        Cirugia programarCirugia = new Cirugia(medico, paciente, fecha);
+        cirugiasProgramadas.push(programarCirugia);
+        
+        
+    }
+    
+    public static void elegirAtencion(int prioridad, QueueCircular<Paciente> prioridadAlta , DoubleLinkedList<Consulta> consultasRealizadas, Medico medico, LocalDate fecha, PilaGenerica<Cirugia> cirugiasProgramadas, QueueCircular<Paciente> prioridadMedia,Medicamento medicacion, int cantidadNecesaria ){
+        Medico[] medicos = new Medico[3];
+        if(prioridad == 1){
+            int longitudFila = prioridadAlta.size();
+            if(longitudFila > 3){
+                longitudFila = 3;
+                
+            }
+            for(int i =0; i<longitudFila ; i++){
+                atencionPrioridadAlta(consultasRealizadas, prioridadAlta, medicos[i], fecha, cirugiasProgramadas);
+            }
+               
+       
+        }
+        if(prioridad == 2){
+            atencionPrioridadMedia(consultasRealizadas, prioridadMedia, medico,medicacion,cantidadNecesaria, fecha);
+        }
     }
 }
