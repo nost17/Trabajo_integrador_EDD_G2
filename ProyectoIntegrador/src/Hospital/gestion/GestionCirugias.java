@@ -4,8 +4,11 @@ import Hospital.estructuras.BinarySearchTree;
 import Hospital.estructuras.DoubleLinkedList;
 import Hospital.estructuras.PilaGenerica;
 import Hospital.modelo.Cirugia;
+import Hospital.modelo.Consulta;
 import Hospital.modelo.Medicamento;
 import Hospital.modelo.Medico;
+import java.time.LocalDate;
+import java.util.Iterator;
 
 public class GestionCirugias {
 
@@ -41,17 +44,71 @@ public class GestionCirugias {
             case 2 -> {
                 consultarMedicamentos();
             }
+            case 3 -> {
+                consultarCirugiasRealizadas();
+            }
+            case 4 -> {
+                consultarConsultasEfectuadas();
+            }
         }
     }
 
     private static void consultarMedicamentos() {
         int stockComparar = Helper.validarEnteroNoNegativo(Principal.input, "Ingrese stock maximo a mostrar: ");
         System.out.println(Helper.repetirLetra("-", 50));
-        System.out.println("Lista de medicamentos con stock menor a "+ stockComparar);
+        System.out.println("Lista de medicamentos con stock menor a " + stockComparar);
         for (Medicamento medicamento : Principal.medicamentos) {
-            if (medicamento.getStockDisponible() <= stockComparar){
+            if (medicamento.getStockDisponible() <= stockComparar) {
                 System.out.println(medicamento);
             }
         }
+    }
+
+    private static void consultarCirugiasRealizadas() {
+        System.out.println("Lista de cirugias efectuadas");
+        for (Cirugia cirugiaRealizada : Principal.cirugiasRealizadas) {
+            System.out.println(cirugiaRealizada);
+        }
+    }
+
+    private static void consultarConsultasEfectuadas() {
+        System.out.println("Lista de consultas efectuadas");
+        for (Consulta consultaRealizada : Principal.consultaRealizadas) {
+            System.out.println(consultaRealizada);
+        }
+    }
+
+    private static int contarCirugiasPorFecha(LocalDate fechaInicial, LocalDate fechaFinal) {
+        int contador = 0;
+        for (Cirugia cirugiaRealizada : Principal.cirugiasRealizadas) {
+            LocalDate fechaCirugia = cirugiaRealizada.getFecha();
+
+            if (fechaCirugia.isAfter(fechaInicial) && fechaCirugia.isBefore(fechaFinal)) {
+                ++contador;
+//                System.out.println(cirugiaRealizada);
+            }
+        }
+        return contador;
+    }
+
+    private static int contarConsultasPorFecha(LocalDate fechaInicial, LocalDate fechaFinal) {
+        int contador = 0;
+        for (Consulta consultaRealizada : Principal.consultaRealizadas) {
+            LocalDate fechaCirugia = consultaRealizada.getFecha();
+
+            if (fechaCirugia.isAfter(fechaInicial) && fechaCirugia.isBefore(fechaFinal)) {
+                ++contador;
+//                System.out.println(consultaRealizada);
+            }
+        }
+        return contador;
+    }
+
+    private static void consultarPacientesPorFecha() {
+        LocalDate fechaInicial = Helper.validarFecha(Principal.input, "Fecha inicial: ", "dd/MM/yyyy");
+        LocalDate fechaFinal = Helper.validarFecha(Principal.input, "Fecha limite: ", "dd/MM/yyyy");
+        System.out.println("Pacientes antendidos desde " + fechaFinal + " hasta " + fechaFinal);
+        System.out.println("En cirugias: " + contarCirugiasPorFecha(fechaInicial, fechaFinal) + " pacientes");
+        System.out.println("En consultas: " + contarConsultasPorFecha(fechaInicial, fechaFinal) + " pacientes");
     }
 }
