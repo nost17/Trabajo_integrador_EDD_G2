@@ -5,6 +5,8 @@ import Hospital.modelo.*;
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Principal {
 
@@ -29,11 +31,9 @@ public class Principal {
             System.out.println("2- Recepcionar Paciente");
             System.out.println("3- Atender Paciente Prioridad Alta");
             System.out.println("4- Atender Paciente Prioridad Media");
-            System.out.println("5- Consultar Medicos Disponibles");
-            System.out.println("6- Consultar Cirugias Realizadas");
-            System.out.println("7- Mostrar consultas Medicas Realizadas");
-            System.out.println("8- Salir");
-            opcion = Helper.validarEnteroEnRango(input, "ingrese opcion:", 1, 8);
+            System.out.println("5- Realizar consultas");
+            System.out.println("6- Salir");
+            opcion = Helper.validarEnteroEnRango(input, "ingrese opcion:", 1, 6);
             System.out.println(Helper.repetirLetra("_", 50));
             switch (opcion) {
                 case 1:
@@ -43,17 +43,13 @@ public class Principal {
                     atencionPacientes(input, prioridadAlta, prioridadMedia);
                     break;
                 case 3:
-                    break;
+                    GestionPacientes.elegirAtencion(1);
                 case 4:
-                    break;
+                    GestionPacientes.elegirAtencion(2);
                 case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
+                    GestionCirugias.GestionConsultas();
             }
-        } while (opcion != 8);
+        } while (opcion != 6);
     }
 
     public static void inicioJornada(ArrayList<Integer> codigos, Medicamento[] medicamentos, BinarySearchTree<Medico> medicosDisponibles, Scanner input) {
@@ -91,10 +87,6 @@ public class Principal {
                 }
                 case 2 -> {
                     System.out.println("   GESTION DE MEDICOS   ");
-                    /*
-                    TODO :Reemplazar `for-loop` por `do-while` y preguntar si
-                    quiere agregar otro medico en cada ciclo
-                     */
                     int cantidad = Helper.validarEntero(input, "Cantidad de Medicos Disponibles: ");
                     for (int i = 0; i < cantidad; i++) {
                         int matricula = (int) (Math.random() * 100);
@@ -113,6 +105,22 @@ public class Principal {
                 }
             }
         } while (opcion != 3);
+    }
+
+    public Medicamento obtenerMedicamentoAleatorio(Medicamento[] medicamentos) {
+        Random random = new Random();
+        while (true) {
+            int index = random.nextInt(medicamentos.length);
+            Medicamento medicamento = medicamentos[index];
+
+            if (medicamento.getStockDisponible() > 0) {
+                int cantidad = random.nextInt(5) + 1;
+                if (medicamento.getStockDisponible() >= cantidad) {
+                    medicamento.setStockDisponible(medicamento.getStockDisponible() - cantidad);
+                    return medicamento;
+                }
+            }
+        }
     }
 
     public static void atencionPacientes(Scanner input, QueueCircular<Paciente> prioridadAlta, QueueCircular<Paciente> prioridadMedia) {
@@ -134,38 +142,11 @@ public class Principal {
         System.out.println("Paciente agregado correctamente...");
         System.out.println(Helper.repetirLetra("_", 50));
     }
-    
-    public static void atencionPrioridadMedia(DoubleLinkedList<Consulta> consultasRealizadas,QueueCircular<Paciente> prioridadMedia, Medico medico, Medicamento medicacion, int cantidadNecesaria, LocalDate fecha){
-        Paciente paciente = prioridadMedia.remove();
-        Consulta consulta = new Consulta(medico, paciente, medicacion, cantidadNecesaria, fecha);
-        consultasRealizadas.addLast(consulta);
-        
-    }
-    public static void atencionPrioridadAlta(DoubleLinkedList<Consulta> consultasRealizadas,QueueCircular<Paciente> prioridadAlta, Medico medico, LocalDate fecha, PilaGenerica<Cirugia> cirugiasProgramadas){
-        
-        Paciente paciente = prioridadAlta.remove(); 
-        Cirugia programarCirugia = new Cirugia(medico, paciente, fecha);
-        cirugiasProgramadas.push(programarCirugia);
-        
-        
-    }
-    
-    public static void elegirAtencion(int prioridad, QueueCircular<Paciente> prioridadAlta , DoubleLinkedList<Consulta> consultasRealizadas, Medico medico, LocalDate fecha, PilaGenerica<Cirugia> cirugiasProgramadas, QueueCircular<Paciente> prioridadMedia,Medicamento medicacion, int cantidadNecesaria ){
-        Medico[] medicos = new Medico[3];
-        if(prioridad == 1){
-            int longitudFila = prioridadAlta.size();
-            if(longitudFila > 3){
-                longitudFila = 3;
-                
-            }
-            for(int i =0; i<longitudFila ; i++){
-                atencionPrioridadAlta(consultasRealizadas, prioridadAlta, medicos[i], fecha, cirugiasProgramadas);
-            }
-               
-       
-        }
-        if(prioridad == 2){
-            atencionPrioridadMedia(consultasRealizadas, prioridadMedia, medico,medicacion,cantidadNecesaria, fecha);
-        }
+
+    public static LocalDate fechasAleatorias() {
+        long minDay = LocalDate.of(1980, 1, 1).toEpochDay();
+        long maxDay = LocalDate.of(2014, 12, 31).toEpochDay();
+        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
+        return LocalDate.ofEpochDay(randomDay);
     }
 }

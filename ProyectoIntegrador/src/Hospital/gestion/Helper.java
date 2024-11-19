@@ -255,9 +255,9 @@ public class Helper {
         especialidad = especialidad.toLowerCase();
         ArrayList<String> especialidades = new ArrayList<>();
         especialidades.add("cirujano");
-        especialidades.add("clinica general");
+        especialidades.add("general");
         while (!especialidades.contains(especialidad)) {
-            System.out.println("Especialidad no valida... CIRUJANO / CLINICA GENERAL");
+            System.out.println("Especialidad no valida... CIRUJANO / GENERAL");
             especialidad = validarSoloLetras(input, "Ingrese Especialidad: ");
             especialidad = especialidad.toLowerCase();
         }
