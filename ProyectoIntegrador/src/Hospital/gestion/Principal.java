@@ -10,9 +10,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Principal {
 
-    private static final int tamañoMedicamentos = ((int) (Math.random() * 10)) + 2;
+//    private static final int tamañoMedicamentos = ((int) (Math.random() * 10)) + 2;
     public static Scanner input = new Scanner(System.in);
-    public static Medicamento[] medicamentos = new Medicamento[tamañoMedicamentos];
+    public static Medicamento[] medicamentos;
     public static BinarySearchTree<Medico> medicosDisponibles = new BinarySearchTree<>();
     public static QueueCircular<Paciente> prioridadAlta = new QueueCircular<>();
     public static QueueCircular<Paciente> prioridadMedia = new QueueCircular<>();
@@ -36,19 +36,28 @@ public class Principal {
             opcion = Helper.validarEnteroEnRango(input, "ingrese opcion:", 1, 6);
             System.out.println(Helper.repetirLetra("_", 50));
             switch (opcion) {
-                case 1:
+                case 1 ->
                     inicioJornada(codigos, medicamentos, medicosDisponibles, input);
-                    break;
-                case 2:
+                case 2 ->
                     atencionPacientes(input, prioridadAlta, prioridadMedia);
-                    break;
-                case 3:
-                    GestionPacientes.elegirAtencion(1);
-                case 4:
-                    GestionPacientes.elegirAtencion(2);
-                case 5:
+                case 3 -> {
+                    try {
+                        GestionPacientes.elegirAtencion(1);
+                    } catch (Exception RuntimeException) {
+                        System.out.println(RuntimeException.getMessage());
+                    }
+                }
+                case 4 -> {
+                    try {
+                        GestionPacientes.elegirAtencion(2);
+                    } catch (Exception RuntimeException) {
+                        System.out.println(RuntimeException.getMessage());
+                    }
+                }
+                case 5 ->
                     GestionCirugias.GestionConsultas();
             }
+            System.out.println(Helper.repetirLetra("_", 50));
         } while (opcion != 6);
     }
 
@@ -69,6 +78,10 @@ public class Principal {
                         break;
                     } else {
                         System.out.println("   GESTION DE MEDICAMENTOS   ");
+
+                        int index = Helper.validarEnteroEnRango(input, "Ingrese la cantidad de medicamentos para esta jornada", 2, 8);
+                        medicamentos = new Medicamento[index];
+
                         for (int i = 0; i < medicamentos.length; i++) {
                             String nombre = Helper.validarSoloLetras(input, "nombre: ");
                             double precio = Helper.validarDouble(input, "precio: ");
@@ -92,11 +105,8 @@ public class Principal {
                         int matricula = (int) (Math.random() * 100);
                         String nombre = Helper.validarSoloLetras(input, "Nomnbre: ");
                         String especialidad = Helper.validarEspecialidad(input);
-                        Medico medico = new Medico();
-                        medico.setEspecialidad(especialidad);
-                        medico.setMatricula(matricula);
-                        medico.setNombre(nombre);
-                        medicosDisponibles.add(medico);
+                        Medico medico = new Medico(matricula, nombre, especialidad);
+                        GestionMedicos.agregarMedico(medico);
                         System.out.println("Medico agregado correctamente...");
                     }
                     medicosDisponibles.InOrder();
@@ -149,4 +159,22 @@ public class Principal {
         long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
         return LocalDate.ofEpochDay(randomDay);
     }
+
+    public static void verificarJornada() {
+        if (medicamentos == null) {
+            throw new RuntimeException("La jornada no ha comenzado.");
+        }
+//        boolean hayMedicamentos = false;
+//        for (Medicamento medicamento : medicamentos) {
+//            if (medicamento.getStockDisponible() > 0) {
+//                hayMedicamentos = true;
+//            }
+//        }
+//
+//        if (!hayMedicamentos) {
+//            throw new RuntimeException("No hay stock de medicamentos.");
+//        }
+
+    }
+
 }

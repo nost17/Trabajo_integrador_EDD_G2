@@ -263,8 +263,9 @@ public class Helper {
         }
         return especialidad;
     }
-    public static String[] validarAntecedentes(Scanner input){
-        int cantidadAntecedentes = validarEntero(input, "Cantidad de Antecedentes: ");
+
+    public static String[] validarAntecedentes(Scanner input) {
+        int cantidadAntecedentes = validarEnteroEnRango(input, "Cantidad de Antecedentes: ", 0, 10);
         String[] listaAntecedentes = new String[cantidadAntecedentes];
         for (int i = 0; i < listaAntecedentes.length; i++) {
             String antecedente = validarSoloLetras(input, "Ingrese Antecedente: ");

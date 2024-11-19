@@ -18,6 +18,11 @@ public class GestionMedicos {
     }
 
     public static Medico buscarMedico(String especialidadBuscada) {
+        
+        if (!hayMedicos()) {
+            throw new RuntimeException("No hay medicos, deben registrar mas.");
+        }
+        
         int indiceAleatorio = (int) (Math.random() * listaAuxiliar.size());
 
         Medico medicoEncontrado = listaAuxiliar.remove(indiceAleatorio);
@@ -29,5 +34,9 @@ public class GestionMedicos {
 
         listaAuxiliar.add(medicoEncontrado);
         return buscarMedico(especialidadBuscada);
+    }
+    
+    public static boolean hayMedicos() {
+        return Principal.medicosDisponibles.NodeCount() > 0;
     }
 }
