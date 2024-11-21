@@ -44,15 +44,27 @@ public class GestionarInicioDeJornada {
                 case 2 -> {
                     System.out.println("   GESTION DE MEDICOS   ");
                     int cantidad = Helper.validarEntero(input, "Cantidad de Medicos Disponibles: ");
+                    if (cantidad == 0){
+                        break;
+                    }
                     for (int i = 0; i < cantidad; i++) {
                         int matricula = (int) (Math.random() * 100);
                         String nombre = Helper.validarSoloLetras(input, "Nomnbre: ");
                         String especialidad = Helper.validarEspecialidad(input);
+                        if (especialidad.equals("cirujano")){
+                            ++Principal.contCirujano;
+                        }
+                        if (especialidad.equals("general")){
+                            ++Principal.contGeneral;
+                        }
                         Medico medico = new Medico(matricula, nombre, especialidad);
                         GestionMedicos.agregarMedico(medico);
                         System.out.println("Medico agregado correctamente...");
                     }
                     medicosDisponibles.InOrder();
+                    System.out.println();
+                    System.out.println("Hay " + Principal.contCirujano + " Medicos Cirujanos");
+                    System.out.println("Hay " + Principal.contGeneral + " Medicos en Climica General");
                     System.out.println();
                     System.out.println(Helper.repetirLetra("_", 50));
                 }

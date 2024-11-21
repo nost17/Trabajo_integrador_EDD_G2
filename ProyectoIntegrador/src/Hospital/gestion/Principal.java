@@ -9,23 +9,24 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Principal {
+    public static Medico medicoGeneral = new Medico();
+    public static int contPacientes = 0;
+    public static int contCirujano = 0;
+    public static int contGeneral = 0;
     public static Scanner input = new Scanner(System.in);
     public static Medicamento[] medicamentos = new Medicamento[0];
     public static BinarySearchTree<Medico> medicosDisponibles = new BinarySearchTree<>();
+    public static ArrayList<Medico> listaMedicosAux = new ArrayList<>();
     public static QueueCircular<Paciente> prioridadAlta = new QueueCircular<>();
     public static QueueCircular<Paciente> prioridadMedia = new QueueCircular<>();
-    public static PilaGenerica<Cirugia> cirugiasProgramadas;
-    public static DoubleLinkedList<Consulta> consultaRealizadas;
-    public static DoubleLinkedList<Cirugia> cirugiasRealizadas;
+    public static PilaGenerica<Cirugia> cirugiasProgramadas = new PilaGenerica();
+    public static DoubleLinkedList<Consulta> consultaRealizadas = new DoubleLinkedList<>();
+    public static DoubleLinkedList<Cirugia> cirugiasRealizadas = new DoubleLinkedList<>();
     public static ArrayList<Integer> codigos = new ArrayList<>();
     public static ArrayList<Integer> matriculas = new ArrayList<>();
 
     public static void main(String[] args) {
         GestionarInicioDeJornada.inicioJornada(medicosDisponibles, input);
-        for (Medicamento medicamento : Principal.medicamentos) {
-                            System.out.println(medicamento);
-                        }
-        medicosDisponibles.InOrder();
         int opcion;
         do {
             System.out.println("--- Menu gestion Hospital ---");
@@ -34,15 +35,19 @@ public class Principal {
             System.out.println("3- Atender Paciente Prioridad Media");
             System.out.println("4- Realizar consultas");
             System.out.println("5- Salir");
-            opcion = Helper.validarEnteroEnRango(input, "ingrese opcion:", 1, 6);
+            opcion = Helper.validarEnteroEnRango(input, "ingrese opcion", 1, 6);
             System.out.println(Helper.repetirLetra("_", 50));
             switch (opcion) {  
-                case 1 ->
+                case 1 ->{
                     GestionPacientes.atencionPacientes(input, prioridadAlta, prioridadMedia);
+                    System.out.println(prioridadAlta.peek());
+                    System.out.println(prioridadMedia.peek());
+                    }
                 case 2 -> 
-                    GestionPacientes.elegirAtencion(1);
-                case 3 ->
-                    GestionPacientes.elegirAtencion(2);
+                    GestionPacientes.recepcionPrioridadAlta();
+                case 3 -> {
+                    GestionPacientes.recepcionPrioridadMedia();
+                    }
                 case 4 ->
                     GestionCirugias.GestionConsultas();
             }

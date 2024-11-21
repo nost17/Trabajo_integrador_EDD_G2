@@ -17,58 +17,86 @@ public class GestionPacientes {
         return random.nextInt(5) + 1;
     }
 
-    public static void atencionPrioridadMedia(Medicamento medicacion, int cantidadNecesaria, LocalDate fecha) {
-        Paciente paciente = Principal.prioridadMedia.remove();
-        Medico medico = GestionMedicos.buscarMedico("general");
-        Consulta consulta = new Consulta(medico, paciente, medicacion, cantidadNecesaria, fecha);
-        Principal.consultaRealizadas.addLast(consulta);
-
-    }
-
-    public static void atencionPrioridadAlta(LocalDate fecha) {
-        Paciente paciente = Principal.prioridadAlta.remove();
-        Medico medico = GestionMedicos.buscarMedico("cirugia");
-        Cirugia programarCirugia = new Cirugia(medico, paciente, fecha);
-        Principal.cirugiasProgramadas.push(programarCirugia);
-
-    }
-
-    public static void elegirAtencion(int prioridad) {
-
-        int cantidadNecesaria = obtenerCantidadAleatoria();
-
-        Medicamento medicacion = GestionMedicamentos.obtenerMedicamentoDisponible();
-        
-        while(medicacion == null){
-            System.out.println("No se hay suficientes dosis para su medicacion... se le dara una cantidad menor");
-        }
-
-        if (medicacion == null) {
-            throw new RuntimeException("No hay medicamentos con el stock solicitado, pida otra cantidad");
-        }
-
-        if (Principal.prioridadAlta.isEmpty()) {
-            throw new RuntimeException("No hay pacientes con prioridad alta en espera");
-        }
-
+    public static void recepcionPrioridadMedia() {
         if (Principal.prioridadMedia.isEmpty()) {
-            throw new RuntimeException("No hay pacientes con prioridad media en espera");
+            System.out.println("No hay pacientes con prioridad media en espera...");
+            return;
         }
-
-        if (prioridad == 1) {
-            int longitudFila = Principal.prioridadAlta.size();
-            if (longitudFila > 3) {
-                longitudFila = 3;
+            if (Principal.contGeneral <= 0){
+                System.out.println("Aun No Se Encuentran Disponibles Medicos En Clinica General...");
+                System.out.println("1. Agregar Medico");
+                System.out.println("2. Volver");
+                int opcion = Helper.validarEnteroEnRango(Principal.input, "Ingrese Opcion: ", 1, 2);
+                if (opcion == 1){
+                    GestionMedicos.agregarMedicosGeneral();
+                    return;
+                }
+                if (opcion == 2){
+                    return;
+                }
+             }
+            if (Principal.contPacientes == 0){
+                Principal.medicoGeneral = GestionMedicos.buscarMedicoGeneral("general");
+                --Principal.contGeneral;
+                Principal.contPacientes = 10;
             }
+            Paciente paciente = Principal.prioridadMedia.remove();
+            int index = 0;
+            int cantidadNecesaria = obtenerCantidadAleatoria();
+            Medicamento medicacion = GestionMedicamentos.obtenerMedicamentoDisponible(index); //tambien obtenemos el valor de la posicion del medicamento
+            System.out.println("se le ha recetado: " + cantidadNecesaria + " de " + medicacion.getNombre());
+            GestionMedicamentos.verificarStockMedicamento(medicacion, cantidadNecesaria, index);
+        
+            LocalDate fecha = Helper.fechasAleatorias();
+            Consulta consulta = new Consulta(Principal.medicoGeneral, paciente, medicacion, cantidadNecesaria, fecha);
+            Principal.consultaRealizadas.addLast(consulta);
+            --Principal.contPacientes;
+    }
 
-            for (int i = 0; i < longitudFila; i++) {
-                atencionPrioridadAlta(Helper.fechasAleatorias());
+    public static void recepcionPrioridadAlta() {
+        if (Principal.prioridadAlta.isEmpty()) {
+            System.out.println("No hay pacientes con prioridad alta en espera");
+            return;
+        } else {
+        int longitudFila = Principal.prioridadAlta.size();
+        if (longitudFila < 3){
+            System.out.println("aun no hay sufientes pacientes para la atencion... deben ser 3");
+            System.out.println("1. Si");
+            System.out.println("2. No");
+            int opcion = Helper.validarEnteroEnRango(Principal.input, "Dese agregar algun paciente mas?...",1,2);
+            if (opcion == 1){
+                agregarPacientePrioridadAlta();
+                return;
             }
-
-        } else if (prioridad == 2) {
-            atencionPrioridadMedia(medicacion, cantidadNecesaria, Helper.fechasAleatorias());
+            if (opcion == 2){
+                return;
+            }
         }
-
+        if (Principal.contCirujano <= 0){
+            System.out.println("No Se Encuentran Disponibles Medicos Cirujanos...");
+            System.out.println("1. Agregar Medico");
+            System.out.println("2. Volver...");
+            int opcion = Helper.validarEnteroEnRango(Principal.input, "Ingrese opcion: ", 1, 2);
+            if (opcion == 1){
+                GestionMedicos.agregarMedicosCirujanos();
+                return;
+            }
+            if (opcion == 2){
+                return;
+            }
+        }
+        if (longitudFila >= 3){
+            for (int i = 0; i < 3; i++) {
+                LocalDate fecha = LocalDate.now();
+                Paciente paciente = Principal.prioridadAlta.remove();
+                Medico medico = GestionMedicos.buscarMedicoCirujano("cirugia");
+                --Principal.contCirujano;
+                Cirugia programarCirugia = new Cirugia(medico, paciente, fecha);
+                Principal.cirugiasProgramadas.push(programarCirugia);
+                System.out.println("cirugia programada: " + programarCirugia);
+            }
+          }
+        }
     }
     
     public static void atencionPacientes(Scanner input, QueueCircular<Paciente> prioridadAlta, QueueCircular<Paciente> prioridadMedia) {
@@ -90,4 +118,14 @@ public class GestionPacientes {
         System.out.println("Paciente agregado correctamente...");
         System.out.println(Helper.repetirLetra("_", 50));
     }
+   
+   public static void agregarPacientePrioridadAlta(){
+       int dni = Helper.validarEntero(Principal.input, "Dni: ");
+        int edad = Helper.validarEnteroEnRango(Principal.input, "Edad: ", 1, 100);
+        String nombre = Helper.validarSoloLetras(Principal.input, "Nombre: ");
+        String[] antecedentes = Helper.validarAntecedentes(Principal.input);
+        Paciente paciente = new Paciente(dni, edad, nombre, antecedentes);
+        Principal.prioridadAlta.offer(paciente);
+        System.out.println(Helper.repetirLetra("_", 50));
+   }
 }
