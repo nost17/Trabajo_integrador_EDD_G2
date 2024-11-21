@@ -58,7 +58,7 @@ public class GestionPacientes {
             }
 
             for (int i = 0; i < 3 && !Principal.prioridadAlta.isEmpty(); i++) {
-                atencionPrioridadAlta(Principal.fechasAleatorias());
+                atencionPrioridadAlta(Helper.fechasAleatorias());
             }
 
         } else if (prioridad == 2) {
@@ -68,7 +68,7 @@ public class GestionPacientes {
 
             Medico medico = GestionMedicos.buscarMedico("general");
             for (int i = 0; i < 10 && !Principal.prioridadMedia.isEmpty(); i++) {
-                atencionPrioridadMedia(medicacion, medico, cantidadNecesaria, Principal.fechasAleatorias());
+                atencionPrioridadMedia(medicacion, medico, cantidadNecesaria, Helper.fechasAleatorias());
             }
             GestionMedicos.agregarMedico(medico);
         }

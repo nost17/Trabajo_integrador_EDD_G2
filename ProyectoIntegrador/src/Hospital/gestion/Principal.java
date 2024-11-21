@@ -2,11 +2,8 @@ package Hospital.gestion;
 
 import Hospital.estructuras.*;
 import Hospital.modelo.*;
-import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Principal {
 
@@ -143,13 +140,6 @@ public class Principal {
         }
 //        System.out.println("Paciente agregado correctamente...");
 //        System.out.println(Helper.repetirLetra("_", 50));
-    }
-
-    public static LocalDate fechasAleatorias() {
-        long minDay = LocalDate.of(1980, 1, 1).toEpochDay();
-        long maxDay = LocalDate.of(2014, 12, 31).toEpochDay();
-        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
-        return LocalDate.ofEpochDay(randomDay);
     }
 
     public static void verificarJornada() {
