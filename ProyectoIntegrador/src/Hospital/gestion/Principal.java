@@ -51,7 +51,7 @@ public class Principal {
             case 1 ->
                 inicioJornada();
             case 2 ->
-                atencionPacientes();
+                GestionPacientes.atencionPacientes();
             case 3 ->
                 GestionPacientes.elegirAtencion(1);
             case 4 ->
@@ -120,26 +120,6 @@ public class Principal {
                 }
             }
         } while (opcion != 3);
-    }
-
-    public static void atencionPacientes() {
-        System.out.println("               GESTION DE PACIENTES               ");
-        int dni = Helper.validarEntero(input, "Dni: ");
-        int edad = Helper.validarEnteroEnRango(input, "Edad", 1, 100);
-        String nombre = Helper.validarStringNoVacio(input, "Nombre: ");
-        String[] antecedentes = Helper.validarAntecedentes(input);
-        Paciente paciente = new Paciente(dni, edad, nombre, antecedentes);
-        System.out.println(Helper.repetirLetra("-", 50));
-        int diagnostico = (int) (Math.random() * 2) + 1;
-        if (diagnostico == 1) {
-            System.out.println("PACIENTE AGREGADO PARA PRIORIDAD ALTA...");
-            prioridadAlta.offer(paciente);
-        } else {
-            System.out.println("PACIENTE AGREGADO PARA PRIORIDAD MEDIA...");
-            prioridadMedia.offer(paciente);
-        }
-//        System.out.println("Paciente agregado correctamente...");
-//        System.out.println(Helper.repetirLetra("_", 50));
     }
 
     public static void verificarJornada() {

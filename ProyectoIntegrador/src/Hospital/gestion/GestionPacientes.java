@@ -72,6 +72,23 @@ public class GestionPacientes {
             }
             GestionMedicos.agregarMedico(medico);
         }
+    }
 
+    public static void atencionPacientes() {
+        System.out.println("               GESTION DE PACIENTES               ");
+        int dni = Helper.validarEntero(Principal.input, "Dni: ");
+        int edad = Helper.validarEnteroEnRango(Principal.input, "Edad", 1, 100);
+        String nombre = Helper.validarStringNoVacio(Principal.input, "Nombre: ");
+        String[] antecedentes = Helper.validarAntecedentes(Principal.input);
+        Paciente paciente = new Paciente(dni, edad, nombre, antecedentes);
+        System.out.println(Helper.repetirLetra("-", 50));
+        int diagnostico = (int) (Math.random() * 2) + 1;
+        if (diagnostico == 1) {
+            System.out.println("PACIENTE AGREGADO PARA PRIORIDAD ALTA...");
+            Principal.prioridadAlta.offer(paciente);
+        } else {
+            System.out.println("PACIENTE AGREGADO PARA PRIORIDAD MEDIA...");
+            Principal.prioridadMedia.offer(paciente);
+        }
     }
 }
