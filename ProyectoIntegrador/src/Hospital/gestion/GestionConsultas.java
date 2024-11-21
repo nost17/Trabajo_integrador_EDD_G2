@@ -5,23 +5,13 @@ import Hospital.modelo.Consulta;
 import Hospital.modelo.Medicamento;
 import java.time.LocalDate;
 
-public class GestionCirugias {
-
-    public static void realizarCirugia() {
-
-        for (int i = 0; i < 3 && !Principal.cirugiasProgramadas.empty(); i++) {
-            Cirugia cirugiaHecha = Principal.cirugiasProgramadas.pop();
-            Principal.cirugiasRealizadas.addLast(cirugiaHecha);
-            GestionMedicos.agregarMedico(cirugiaHecha.getMedicoAcargo());
-            System.out.println("Se ha concretado la cirugia: " + cirugiaHecha);
-        }
-    }
+public class GestionConsultas {
 
     public static void GestionConsultas() {
         int opcion;
         do {
             System.out.println("1. Consulta de medicos disponibles");
-            System.out.println("2. Consulta de medicamentos por stock (min y max)");
+            System.out.println("2. Consulta de medicamentos por stock (max)");
             System.out.println("3. Consulta de cirugías realizadas");
             System.out.println("4. Consulta de consultas medicas efectuadas");
             System.out.println("5. Consulta de pacientes atendidos en un rango de fechas");
@@ -29,12 +19,13 @@ public class GestionCirugias {
             System.out.println("7. Consulta de pacientes atendidos en consulta por antecedente");
             System.out.println("8. Consulta total al que ascienden los medicamentos que tiene el hospital");
             System.out.println("9. Volver");
-            opcion = Helper.validarEnteroEnRango(Principal.input, "Elije una opcion: ", 0, 9);
+            opcion = Helper.validarEnteroEnRango(Principal.input, "Elije una opcion:", 1, 9);
             System.out.println(Helper.repetirLetra("-", 50));
             try {
                 ejecutarOpcion(opcion);
             } catch (Exception RuntimeException) {
                 System.out.println(RuntimeException.getMessage());
+            } finally {
                 if (opcion != 9) {
                     System.out.println(Helper.repetirLetra("-", 50));
                 }
@@ -46,10 +37,11 @@ public class GestionCirugias {
         switch (opcion) {
             case 1 -> {
                 if (!GestionMedicos.hayMedicos()) {
-                    System.out.println("No hay medicos disponibles");
+                    throw new RuntimeException("No hay medicos disponibles");
                 }
                 System.out.println("Lista de medicos disponibles en el hospital:");
                 Principal.medicosDisponibles.InOrder();
+                System.out.println();
             }
             case 2 -> {
                 consultarMedicamentos();
@@ -92,16 +84,28 @@ public class GestionCirugias {
 
     private static void consultarCirugiasRealizadas() {
         Principal.verificarJornada();
+
+        if (Principal.cirugiasRealizadas.size() == 0) {
+            throw new RuntimeException("No se realizaron cirugias aun.");
+        }
+
         System.out.println("Lista de cirugias efectuadas");
         for (Cirugia cirugiaRealizada : Principal.cirugiasRealizadas) {
+            System.out.println(Helper.repetirLetra("*", 30));
             System.out.println(cirugiaRealizada);
         }
     }
 
     private static void consultarConsultasEfectuadas() {
         Principal.verificarJornada();
+
+        if (Principal.consultaRealizadas.size() == 0) {
+            throw new RuntimeException("No se realizaron consultas aun.");
+        }
+
         System.out.println("Lista de consultas efectuadas");
         for (Consulta consultaRealizada : Principal.consultaRealizadas) {
+            System.out.println(Helper.repetirLetra("*", 30));
             System.out.println(consultaRealizada);
         }
     }
@@ -160,15 +164,15 @@ public class GestionCirugias {
 
         System.out.println("Hay " + contador + " pacientes operados de "
                 + edadInicial
-                + " años" + " hasta "
+                + " anios hasta "
                 + edadFinal
-                + " años");
+                + " anios");
     }
 
     private static void consultarPacientesPorAntecedenteEnConsultas() {
         Principal.verificarJornada();
         int contador = 0;
-        String casoBuscado = Helper.validarStringNoVacio(Principal.input, "Escriba el pacedimiento a buscar: ");
+        String casoBuscado = Helper.validarStringNoVacio(Principal.input, "Escriba el padecimiento a buscar: ");
 
         for (Consulta consultaRealizada : Principal.consultaRealizadas) {
             String[] antecedentes = consultaRealizada.getPaciente().getAntecedentes();

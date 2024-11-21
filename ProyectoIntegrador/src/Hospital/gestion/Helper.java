@@ -84,14 +84,14 @@ public class Helper {
     public static boolean validarSiNo(Scanner entrada, String mensaje) {
         String valorIngresado;
         while (true) {
-            System.out.println(mensaje + " (sí/no):");
+            System.out.print(mensaje + " (si/no): ");
             valorIngresado = entrada.nextLine().trim().toLowerCase();
-            if (valorIngresado.equals("sí") || valorIngresado.equals("si")) {
+            if (valorIngresado.equals("si")) {
                 return true;
             } else if (valorIngresado.equals("no")) {
                 return false;
             } else {
-                System.out.println("Error!!! Debe responder 'sí' o 'no'.");
+                System.out.println("Error!!! Debe responder 'si' o 'no'.");
             }
         }
     }
@@ -118,7 +118,7 @@ public class Helper {
     public static String validarStringNoVacio(Scanner entrada, String mensaje) {
         String valorIngresado;
         while (true) {
-            System.out.println(mensaje);
+            System.out.print(mensaje);
             valorIngresado = entrada.nextLine().trim();
             if (!valorIngresado.isEmpty()) {
                 return valorIngresado;
