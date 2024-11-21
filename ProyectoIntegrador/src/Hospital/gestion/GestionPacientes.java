@@ -1,5 +1,6 @@
 package Hospital.gestion;
 
+import Hospital.estructuras.QueueCircular;
 import Hospital.modelo.Cirugia;
 import Hospital.modelo.Consulta;
 import Hospital.modelo.Medicamento;
@@ -7,30 +8,13 @@ import Hospital.modelo.Medico;
 import Hospital.modelo.Paciente;
 import java.time.LocalDate;
 import java.util.Random;
+import java.util.Scanner;
 
 public class GestionPacientes {
 
     public static int obtenerCantidadAleatoria() {
         Random random = new Random();
         return random.nextInt(5) + 1;
-    }
-
-    public static Medicamento obtenerMedicamentoDisponible(int cantidad) {
-
-        Principal.verificarJornada();
-        Random random = new Random();
-
-        for (int i = 0; i < Principal.medicamentos.length; i++) {
-            int index = random.nextInt(Principal.medicamentos.length);
-            Medicamento medicamento = Principal.medicamentos[index];
-
-            int stock = medicamento.getStockDisponible();
-            if (stock > 0 && stock >= cantidad) {
-                Principal.medicamentos[index].setStockDisponible(stock - cantidad);
-                return medicamento;
-            }
-        }
-        return null;
     }
 
     public static void atencionPrioridadMedia(Medicamento medicacion, int cantidadNecesaria, LocalDate fecha) {
@@ -53,7 +37,11 @@ public class GestionPacientes {
 
         int cantidadNecesaria = obtenerCantidadAleatoria();
 
-        Medicamento medicacion = obtenerMedicamentoDisponible(cantidadNecesaria);
+        Medicamento medicacion = GestionMedicamentos.obtenerMedicamentoDisponible();
+        
+        while(medicacion == null){
+            System.out.println("No se hay suficientes dosis para su medicacion... se le dara una cantidad menor");
+        }
 
         if (medicacion == null) {
             throw new RuntimeException("No hay medicamentos con el stock solicitado, pida otra cantidad");
@@ -74,12 +62,32 @@ public class GestionPacientes {
             }
 
             for (int i = 0; i < longitudFila; i++) {
-                atencionPrioridadAlta(Principal.fechasAleatorias());
+                atencionPrioridadAlta(Helper.fechasAleatorias());
             }
 
         } else if (prioridad == 2) {
-            atencionPrioridadMedia(medicacion, cantidadNecesaria, Principal.fechasAleatorias());
+            atencionPrioridadMedia(medicacion, cantidadNecesaria, Helper.fechasAleatorias());
         }
 
+    }
+    
+    public static void atencionPacientes(Scanner input, QueueCircular<Paciente> prioridadAlta, QueueCircular<Paciente> prioridadMedia) {
+        System.out.println("               GESTION DE PACIENTES               ");
+        int dni = Helper.validarEntero(input, "Dni: ");
+        int edad = Helper.validarEnteroEnRango(input, "Edad: ", 1, 100);
+        String nombre = Helper.validarSoloLetras(input, "Nombre: ");
+        String[] antecedentes = Helper.validarAntecedentes(input);
+        Paciente paciente = new Paciente(dni, edad, nombre, antecedentes);
+        System.out.println(Helper.repetirLetra("_", 50));
+        int diagnostico = (int) (Math.random() * 2) + 1;
+        if (diagnostico == 1) {
+            System.out.println("PACIENTE AGREGADO PARA PRIORIDAD ALTA...");
+            prioridadAlta.offer(paciente);
+        } else {
+            System.out.println("PACIENTE AGREGADO PARA PRIORIDAD MEDIA...");
+            prioridadMedia.offer(paciente);
+        }
+        System.out.println("Paciente agregado correctamente...");
+        System.out.println(Helper.repetirLetra("_", 50));
     }
 }

@@ -7,6 +7,7 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Helper {
 
@@ -272,5 +273,11 @@ public class Helper {
             listaAntecedentes[i] = antecedente;
         }
         return listaAntecedentes;
+    }
+    public static LocalDate fechasAleatorias() {
+        long minDay = LocalDate.of(1980, 1, 1).toEpochDay();
+        long maxDay = LocalDate.of(2014, 12, 31).toEpochDay();
+        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
+        return LocalDate.ofEpochDay(randomDay);
     }
 }

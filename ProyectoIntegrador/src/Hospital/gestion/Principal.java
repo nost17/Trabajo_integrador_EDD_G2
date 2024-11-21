@@ -9,10 +9,8 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Principal {
-
-//    private static final int tamañoMedicamentos = ((int) (Math.random() * 10)) + 2;
     public static Scanner input = new Scanner(System.in);
-    public static Medicamento[] medicamentos;
+    public static Medicamento[] medicamentos = new Medicamento[0];
     public static BinarySearchTree<Medico> medicosDisponibles = new BinarySearchTree<>();
     public static QueueCircular<Paciente> prioridadAlta = new QueueCircular<>();
     public static QueueCircular<Paciente> prioridadMedia = new QueueCircular<>();
@@ -23,147 +21,34 @@ public class Principal {
     public static ArrayList<Integer> matriculas = new ArrayList<>();
 
     public static void main(String[] args) {
-
+        GestionarInicioDeJornada.inicioJornada(medicosDisponibles, input);
+        for (Medicamento medicamento : Principal.medicamentos) {
+                            System.out.println(medicamento);
+                        }
+        medicosDisponibles.InOrder();
         int opcion;
         do {
             System.out.println("--- Menu gestion Hospital ---");
-            System.out.println("1- Inicio de Jornada Laboral");
-            System.out.println("2- Recepcionar Paciente");
-            System.out.println("3- Atender Paciente Prioridad Alta");
-            System.out.println("4- Atender Paciente Prioridad Media");
-            System.out.println("5- Realizar consultas");
-            System.out.println("6- Salir");
+            System.out.println("1- Recepcionar Paciente");
+            System.out.println("2- Atender Paciente Prioridad Alta");
+            System.out.println("3- Atender Paciente Prioridad Media");
+            System.out.println("4- Realizar consultas");
+            System.out.println("5- Salir");
             opcion = Helper.validarEnteroEnRango(input, "ingrese opcion:", 1, 6);
             System.out.println(Helper.repetirLetra("_", 50));
-            switch (opcion) {
+            switch (opcion) {  
                 case 1 ->
-                    inicioJornada(codigos, medicamentos, medicosDisponibles, input);
-                case 2 ->
-                    atencionPacientes(input, prioridadAlta, prioridadMedia);
-                case 3 -> {
-                    try {
-                        GestionPacientes.elegirAtencion(1);
-                    } catch (Exception RuntimeException) {
-                        System.out.println(RuntimeException.getMessage());
-                    }
-                }
-                case 4 -> {
-                    try {
-                        GestionPacientes.elegirAtencion(2);
-                    } catch (Exception RuntimeException) {
-                        System.out.println(RuntimeException.getMessage());
-                    }
-                }
-                case 5 ->
+                    GestionPacientes.atencionPacientes(input, prioridadAlta, prioridadMedia);
+                case 2 -> 
+                    GestionPacientes.elegirAtencion(1);
+                case 3 ->
+                    GestionPacientes.elegirAtencion(2);
+                case 4 ->
                     GestionCirugias.GestionConsultas();
             }
             System.out.println(Helper.repetirLetra("_", 50));
-        } while (opcion != 6);
+        } while (opcion != 5);
     }
-
-    public static void inicioJornada(ArrayList<Integer> codigos, Medicamento[] medicamentos, BinarySearchTree<Medico> medicosDisponibles, Scanner input) {
-        int opcion;
-        boolean bandera = false;
-        do {
-            System.out.println("1- Gestion de Medicamentos");
-            System.out.println("2- Gestion de Medicos");
-            System.out.println("3- Volver...");
-            opcion = Helper.validarEnteroEnRango(input, "ingrese opcion:", 1, 3);
-            System.out.println(Helper.repetirLetra("_", 50));
-            switch (opcion) {
-                case 1 -> {
-                    if (bandera) {
-                        System.out.println("Ya no puedes modificar la lista de Medicamentos...");
-                        System.out.println(Helper.repetirLetra("_", 50));
-                        break;
-                    } else {
-                        System.out.println("   GESTION DE MEDICAMENTOS   ");
-
-                        int index = Helper.validarEnteroEnRango(input, "Ingrese la cantidad de medicamentos para esta jornada", 2, 8);
-                        medicamentos = new Medicamento[index];
-
-                        for (int i = 0; i < medicamentos.length; i++) {
-                            String nombre = Helper.validarSoloLetras(input, "nombre: ");
-                            double precio = Helper.validarDouble(input, "precio: ");
-                            int stockDisponible = Helper.validarEntero(input, "Stock Disponible: ");
-                            Medicamento medicamento = new Medicamento(nombre, precio, stockDisponible);
-                            medicamentos[i] = medicamento;
-                            System.out.println("Medicamento Agregado...");
-                        }
-                        System.out.println("Lista de Medicamentos Actualizada: ");
-                        for (Medicamento medicamento : medicamentos) {
-                            System.out.println(medicamento);
-                        }
-                        bandera = true;
-                    }
-                    System.out.println(Helper.repetirLetra("_", 50));
-                }
-                case 2 -> {
-                    System.out.println("   GESTION DE MEDICOS   ");
-                    int cantidad = Helper.validarEntero(input, "Cantidad de Medicos Disponibles: ");
-                    for (int i = 0; i < cantidad; i++) {
-                        int matricula = (int) (Math.random() * 100);
-                        String nombre = Helper.validarSoloLetras(input, "Nomnbre: ");
-                        String especialidad = Helper.validarEspecialidad(input);
-                        Medico medico = new Medico(matricula, nombre, especialidad);
-                        GestionMedicos.agregarMedico(medico);
-                        System.out.println("Medico agregado correctamente...");
-                    }
-                    medicosDisponibles.InOrder();
-                    System.out.println();
-                    System.out.println(Helper.repetirLetra("_", 50));
-                }
-            }
-        } while (opcion != 3);
-    }
-
-    public Medicamento obtenerMedicamentoAleatorio(Medicamento[] medicamentos) {
-        Random random = new Random();
-        while (true) {
-            int index = random.nextInt(medicamentos.length);
-            Medicamento medicamento = medicamentos[index];
-
-            if (medicamento.getStockDisponible() > 0) {
-                int cantidad = random.nextInt(5) + 1;
-                if (medicamento.getStockDisponible() >= cantidad) {
-                    medicamento.setStockDisponible(medicamento.getStockDisponible() - cantidad);
-                    return medicamento;
-                }
-            }
-        }
-    }
-
-    public static void atencionPacientes(Scanner input, QueueCircular<Paciente> prioridadAlta, QueueCircular<Paciente> prioridadMedia) {
-        System.out.println("               GESTION DE PACIENTES               ");
-        int dni = Helper.validarEntero(input, "Dni: ");
-        int edad = Helper.validarEnteroEnRango(input, "Edad: ", 1, 100);
-        String nombre = Helper.validarSoloLetras(input, "Nombre: ");
-        String[] antecedentes = Helper.validarAntecedentes(input);
-        Paciente paciente = new Paciente(dni, edad, nombre, antecedentes);
-        System.out.println(Helper.repetirLetra("_", 50));
-        int diagnostico = (int) (Math.random() * 2) + 1;
-        if (diagnostico == 1) {
-            System.out.println("PACIENTE AGREGADO PARA PRIORIDAD ALTA...");
-            prioridadAlta.offer(paciente);
-        } else {
-            System.out.println("PACIENTE AGREGADO PARA PRIORIDAD MEDIA...");
-            prioridadMedia.offer(paciente);
-        }
-        System.out.println("Paciente agregado correctamente...");
-        System.out.println(Helper.repetirLetra("_", 50));
-    }
-
-    public static LocalDate fechasAleatorias() {
-        long minDay = LocalDate.of(1980, 1, 1).toEpochDay();
-        long maxDay = LocalDate.of(2014, 12, 31).toEpochDay();
-        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
-        return LocalDate.ofEpochDay(randomDay);
-    }
-
-    public static void verificarJornada() {
-        if (medicamentos == null) {
-            throw new RuntimeException("La jornada no ha comenzado.");
-        }
 //        boolean hayMedicamentos = false;
 //        for (Medicamento medicamento : medicamentos) {
 //            if (medicamento.getStockDisponible() > 0) {
@@ -174,7 +59,5 @@ public class Principal {
 //        if (!hayMedicamentos) {
 //            throw new RuntimeException("No hay stock de medicamentos.");
 //        }
-
-    }
 
 }

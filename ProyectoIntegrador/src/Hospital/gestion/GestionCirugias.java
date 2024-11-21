@@ -79,7 +79,6 @@ public class GestionCirugias {
     }
 
     private static void consultarMedicamentos() {
-        Principal.verificarJornada();
         int stockComparar = Helper.validarEnteroNoNegativo(Principal.input, "Ingrese stock maximo a mostrar: ");
         System.out.println(Helper.repetirLetra("-", 50));
         System.out.println("Lista de medicamentos con stock menor a " + stockComparar);
@@ -91,7 +90,6 @@ public class GestionCirugias {
     }
 
     private static void consultarCirugiasRealizadas() {
-        Principal.verificarJornada();
         System.out.println("Lista de cirugias efectuadas");
         for (Cirugia cirugiaRealizada : Principal.cirugiasRealizadas) {
             System.out.println(cirugiaRealizada);
@@ -99,7 +97,6 @@ public class GestionCirugias {
     }
 
     private static void consultarConsultasEfectuadas() {
-        Principal.verificarJornada();
         System.out.println("Lista de consultas efectuadas");
         for (Consulta consultaRealizada : Principal.consultaRealizadas) {
             System.out.println(consultaRealizada);
@@ -107,7 +104,6 @@ public class GestionCirugias {
     }
 
     private static int contarCirugiasPorFecha(LocalDate fechaInicial, LocalDate fechaFinal) {
-        Principal.verificarJornada();
         int contador = 0;
         for (Cirugia cirugiaRealizada : Principal.cirugiasRealizadas) {
             LocalDate fechaCirugia = cirugiaRealizada.getFecha();
@@ -134,7 +130,6 @@ public class GestionCirugias {
     }
 
     private static void consultarPacientesPorFecha() {
-        Principal.verificarJornada();
         LocalDate fechaInicial = Helper.validarFecha(Principal.input, "Fecha inicial: ", "dd/MM/yyyy");
         LocalDate fechaFinal = Helper.validarFecha(Principal.input, "Fecha limite: ", "dd/MM/yyyy");
         System.out.println(Helper.repetirLetra("-", 50));
@@ -144,7 +139,6 @@ public class GestionCirugias {
     }
 
     private static void consultarOperadosPorEdad() {
-        Principal.verificarJornada();
         int contador = 0;
 
         int edadInicial = Helper.validarEnteroNoNegativo(Principal.input, "Edad minima: ");
@@ -166,7 +160,6 @@ public class GestionCirugias {
     }
 
     private static void consultarPacientesPorAntecedenteEnConsultas() {
-        Principal.verificarJornada();
         int contador = 0;
         String casoBuscado = Helper.validarStringNoVacio(Principal.input, "Escriba el pacedimiento a buscar: ");
 
@@ -184,7 +177,6 @@ public class GestionCirugias {
     }
 
     private static void consultarMontoTotalMedicamentos() {
-        Principal.verificarJornada();
         double contador = 0;
 
         for (Medicamento medicamento : Principal.medicamentos) {
