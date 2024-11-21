@@ -18,24 +18,29 @@ public class GestionMedicos {
     }
 
     public static Medico buscarMedico(String especialidadBuscada) {
-        
+
         if (!hayMedicos()) {
             throw new RuntimeException("No hay medicos, deben registrar mas.");
         }
-        
-        int indiceAleatorio = (int) (Math.random() * listaAuxiliar.size());
+        int maximasVueltas = listaAuxiliar.size();
+        int indiceAleatorio = (int) (Math.random() * maximasVueltas);
+        int contador = 0;
 
-        Medico medicoEncontrado = listaAuxiliar.remove(indiceAleatorio);
+        while (contador < maximasVueltas) {
+            Medico medicoEncontrado = listaAuxiliar.remove(indiceAleatorio);
 
-        if (medicoEncontrado.getEspecialidad().equals(especialidadBuscada)) {
-            Principal.medicosDisponibles.remove(medicoEncontrado);
-            return medicoEncontrado;
+            if (medicoEncontrado.getEspecialidad().equals(especialidadBuscada)) {
+                Principal.medicosDisponibles.remove(medicoEncontrado);
+                return medicoEncontrado;
+            }
+
+            listaAuxiliar.add(medicoEncontrado);
+            ++contador;
         }
 
-        listaAuxiliar.add(medicoEncontrado);
-        return buscarMedico(especialidadBuscada);
+        throw new RuntimeException("No hay medicos de especialidad " + especialidadBuscada + " disponibles");
     }
-    
+
     public static boolean hayMedicos() {
         return Principal.medicosDisponibles.NodeCount() > 0;
     }
