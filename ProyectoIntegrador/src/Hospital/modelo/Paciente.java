@@ -50,8 +50,8 @@ public class Paciente {
 
     @Override
     public String toString() {
-        return "Paciente [dni=" + dni + ", edad=" + edad + ", nombre=" + nombre + ", antecedentes="
-                + Arrays.toString(antecedentes) + "]";
+        return "Paciente [ Dni: " + dni + ", Edad: " + edad + ", Nombre: " + nombre + ", Antecedentes: "
+                + Arrays.toString(antecedentes) + " ]";
     }
 
 }

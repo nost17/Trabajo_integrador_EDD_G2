@@ -42,7 +42,7 @@ public class Medico implements Comparable<Medico> {
 
     @Override
     public String toString() {
-        return "Medico [matricula=" + matricula + ", nombre=" + nombre + ", especialidad=" + especialidad + "]";
+        return "Medico " + matricula + " [ Nombre -> " + nombre + ", Especialidad -> " + especialidad + " ]";
     }
 
     @Override

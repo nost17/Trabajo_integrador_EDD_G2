@@ -40,7 +40,7 @@ public class Cirugia {
 
     @Override
     public String toString() {
-        return "Cirugia [medicoAcargo=" + medicoAcargo + ", paciente=" + paciente + ", fecha=" + fecha + "]";
+        return "Cirugia\n Medico a cargo: " + medicoAcargo + "\n Paciente: " + paciente + "\n Fecha: " + fecha;
     }
 
 }

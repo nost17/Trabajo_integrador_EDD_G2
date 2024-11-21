@@ -7,8 +7,8 @@ public class Medicamento {
     private String nombre;
     private double precio;
     private int stockDisponible;
-    
-    public Medicamento(){
+
+    public Medicamento() {
         this.codigo = _codigo;
         ++_codigo;
     }
@@ -51,8 +51,8 @@ public class Medicamento {
 
     @Override
     public String toString() {
-        return "Medicamento [codigo=" + codigo + ", nombre=" + nombre + ", precio=" + precio + ", stockDisponible="
-                + stockDisponible + "]";
+        return "Medicamento " + codigo + " [ Nombre -> " + nombre + ", Precio -> " + precio + ", Stock -> "
+                + stockDisponible + " ]";
     }
 
 }

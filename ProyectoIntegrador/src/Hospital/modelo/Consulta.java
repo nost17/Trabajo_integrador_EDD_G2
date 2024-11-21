@@ -61,8 +61,18 @@ public class Consulta {
 
     @Override
     public String toString() {
-        return "Consulta [medicoAcargo=" + medicoAcargo + ", paciente=" + paciente + ", medicacionAdministrada="
-                + medicacionAdministrada + ", cantidadAplicada=" + cantidadAplicada + ", fecha=" + fecha + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Consulta\n");
+        sb.append(" Medico a cargo -> ").append(medicoAcargo.getNombre()).append("\n");
+        sb.append(" Paciente -> ").append(paciente).append("\n");
+        sb.append(" Medicacion -> ")
+                .append(medicacionAdministrada.getNombre())
+                .append(", Cantidad -> ")
+                .append(cantidadAplicada)
+                .append("\n");
+        sb.append(" Fecha -> ").append(fecha);
+        
+        return sb.toString();
     }
 
 }
