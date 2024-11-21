@@ -33,20 +33,35 @@ public class GestionPacientes {
         return null;
     }
 
-    public static void atencionPrioridadMedia(Medicamento medicacion, int cantidadNecesaria, LocalDate fecha) {
+    public static void atencionPrioridadMedia(Medicamento medicacion, Medico medico, int cantidadNecesaria, LocalDate fecha) {
         Paciente paciente = Principal.prioridadMedia.remove();
-        Medico medico = GestionMedicos.buscarMedico("general");
         Consulta consulta = new Consulta(medico, paciente, medicacion, cantidadNecesaria, fecha);
         Principal.consultaRealizadas.addLast(consulta);
-
+        System.out.println("SE ATENDIO A " + paciente.getNombre());
     }
 
     public static void atencionPrioridadAlta(LocalDate fecha) {
         Paciente paciente = Principal.prioridadAlta.remove();
-        Medico medico = GestionMedicos.buscarMedico("cirugia");
+        Medico medico = GestionMedicos.buscarMedico("cirujano");
         Cirugia programarCirugia = new Cirugia(medico, paciente, fecha);
         Principal.cirugiasProgramadas.push(programarCirugia);
+        System.out.println("SE PROGRAMO UNA CIRUJIA PARA " + paciente.getNombre());
+    }
 
+    public static void realizarCirugiasProgramadas() {
+
+        if (Principal.cirugiasProgramadas.empty()) {
+            throw new RuntimeException("No hay cirugias programadas");
+        }
+
+        for (int i = 0; i < 3 && !Principal.cirugiasProgramadas.empty(); i++) {
+            Cirugia cirugia = Principal.cirugiasProgramadas.pop();
+            Medico medico = cirugia.getMedicoAcargo();
+            Principal.cirugiasRealizadas.addLast(cirugia);
+            GestionMedicos.agregarMedico(medico);
+            System.out.println(Helper.repetirLetra("*", 30));
+            System.out.println(cirugia);
+        }
     }
 
     public static void elegirAtencion(int prioridad) {
@@ -59,26 +74,25 @@ public class GestionPacientes {
             throw new RuntimeException("No hay medicamentos con el stock solicitado, pida otra cantidad");
         }
 
-        if (Principal.prioridadAlta.isEmpty()) {
-            throw new RuntimeException("No hay pacientes con prioridad alta en espera");
-        }
-
-        if (Principal.prioridadMedia.isEmpty()) {
-            throw new RuntimeException("No hay pacientes con prioridad media en espera");
-        }
-
         if (prioridad == 1) {
-            int longitudFila = Principal.prioridadAlta.size();
-            if (longitudFila > 3) {
-                longitudFila = 3;
+            if (Principal.prioridadAlta.isEmpty()) {
+                throw new RuntimeException("No hay pacientes con prioridad alta en espera");
             }
 
-            for (int i = 0; i < longitudFila; i++) {
+            for (int i = 0; i < 3 && !Principal.prioridadAlta.isEmpty(); i++) {
                 atencionPrioridadAlta(Principal.fechasAleatorias());
             }
 
         } else if (prioridad == 2) {
-            atencionPrioridadMedia(medicacion, cantidadNecesaria, Principal.fechasAleatorias());
+            if (Principal.prioridadMedia.isEmpty()) {
+                throw new RuntimeException("No hay pacientes con prioridad media en espera");
+            }
+
+            Medico medico = GestionMedicos.buscarMedico("general");
+            for (int i = 0; i < 10 && !Principal.prioridadMedia.isEmpty(); i++) {
+                atencionPrioridadMedia(medicacion, medico, cantidadNecesaria, Principal.fechasAleatorias());
+            }
+            GestionMedicos.agregarMedico(medico);
         }
 
     }
