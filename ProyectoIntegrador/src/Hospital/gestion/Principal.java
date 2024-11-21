@@ -49,7 +49,7 @@ public class Principal {
     public static void ejecutarOpcion(int opcion) {
         switch (opcion) {
             case 1 ->
-                inicioJornada();
+                GestionJornada.inicioJornada();
             case 2 ->
                 GestionPacientes.atencionPacientes();
             case 3 ->
@@ -62,71 +62,6 @@ public class Principal {
                 GestionConsultas.GestionConsultas();
 
         }
-    }
-
-    public static void inicioJornada() {
-        int opcion;
-        boolean bandera = false;
-        do {
-            System.out.println("1- Gestion de Medicamentos");
-            System.out.println("2- Gestion de Medicos");
-            System.out.println("3- Volver...");
-            opcion = Helper.validarEnteroEnRango(input, "ingrese opcion:", 1, 3);
-            System.out.println(Helper.repetirLetra("_", 50));
-            switch (opcion) {
-                case 1 -> {
-                    if (bandera) {
-                        System.out.println("Ya no puedes modificar la lista de Medicamentos...");
-                        System.out.println(Helper.repetirLetra("_", 50));
-                        break;
-                    } else {
-                        System.out.println("   GESTION DE MEDICAMENTOS   ");
-
-                        int index = Helper.validarEnteroEnRango(input, "Ingrese la cantidad de medicamentos para esta jornada", 2, 8);
-                        medicamentos = new Medicamento[index];
-
-                        for (int i = 0; i < medicamentos.length; i++) {
-                            String nombre = Helper.validarSoloLetras(input, "nombre: ");
-                            double precio = Helper.validarDouble(input, "precio: ");
-                            int stockDisponible = Helper.validarEntero(input, "stock : ");
-                            Medicamento medicamento = new Medicamento(nombre, precio, stockDisponible);
-                            medicamentos[i] = medicamento;
-                            System.out.println("Medicamento Agregado...");
-                        }
-                        System.out.println("Lista de Medicamentos Actualizada: ");
-                        for (Medicamento medicamento : medicamentos) {
-                            System.out.println(medicamento);
-                        }
-                        bandera = true;
-                    }
-                    System.out.println(Helper.repetirLetra("_", 50));
-                }
-                case 2 -> {
-                    System.out.println("   GESTION DE MEDICOS   ");
-                    while (true) {
-                        int matricula = (int) (Math.random() * 100);
-                        String nombre = Helper.validarSoloLetras(input, "Nombre: ");
-                        String especialidad = Helper.validarEspecialidad(input);
-                        Medico medico = new Medico(matricula, nombre, especialidad);
-                        GestionMedicos.agregarMedico(medico);
-                        System.out.println("Medico agregado correctamente...");
-                        boolean agregarOtro = Helper.validarSiNo(input, "Agregar otro medico?");
-
-                        if (!agregarOtro) {
-                            break;
-                        }
-                    }
-                    System.out.println(Helper.repetirLetra("_", 50));
-                }
-            }
-        } while (opcion != 3);
-    }
-
-    public static void verificarJornada() {
-        if (medicamentos == null) {
-            throw new RuntimeException("La jornada no ha comenzado.");
-        }
-
     }
 
 }

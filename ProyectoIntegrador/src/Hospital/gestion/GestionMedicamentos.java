@@ -7,7 +7,7 @@ public class GestionMedicamentos {
 
     public static Medicamento obtenerMedicamentoDisponible(int cantidad) {
 
-        Principal.verificarJornada();
+        GestionJornada.verificarJornada();
         Random random = new Random();
 
         for (int i = 0; i < Principal.medicamentos.length; i++) {
