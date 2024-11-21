@@ -125,22 +125,6 @@ public class Principal {
         } while (opcion != 3);
     }
 
-    public Medicamento obtenerMedicamentoAleatorio(Medicamento[] medicamentos) {
-        Random random = new Random();
-        while (true) {
-            int index = random.nextInt(medicamentos.length);
-            Medicamento medicamento = medicamentos[index];
-
-            if (medicamento.getStockDisponible() > 0) {
-                int cantidad = random.nextInt(5) + 1;
-                if (medicamento.getStockDisponible() >= cantidad) {
-                    medicamento.setStockDisponible(medicamento.getStockDisponible() - cantidad);
-                    return medicamento;
-                }
-            }
-        }
-    }
-
     public static void atencionPacientes() {
         System.out.println("               GESTION DE PACIENTES               ");
         int dni = Helper.validarEntero(input, "Dni: ");
